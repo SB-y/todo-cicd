@@ -43,8 +43,8 @@ RUN mvn -DskipTests package
 
 # Ports exposés dans le conteneur :
 # 5000 = pour le frontend
-# 8080 = pour le backend
-EXPOSE 5000 8080
+# 8081 = pour le backend
+EXPOSE 5000 8081
 
 # 👇 Active le profil de test (H2) pour éviter les erreurs PostgreSQL
 ENV SPRING_PROFILES_ACTIVE=test
