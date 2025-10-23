@@ -39,16 +39,17 @@ COPY planit/ .
 # Résultat : un .jar généré dans target/
 RUN mvn -DskipTests package
 
-# Ports exposés DANS le conteneur
-# 5000 = pour servir le frontend
-# 8080 = pour exposer l’API Spring Boot
+# ---------- CONFIGURATION D’EXÉCUTION ----------
+
+# Ports exposés dans le conteneur :
+# 5000 = pour le frontend
+# 8080 = pour le backend
 EXPOSE 5000 8080
 
+# 👇 Active le profil de test (H2) pour éviter les erreurs PostgreSQL
+ENV SPRING_PROFILES_ACTIVE=test
+
 # Commande de démarrage :
-# - Lance le backend Spring Boot avec java -jar (par défaut sur 8080)
-# - Lance en parallèle un serveur statique Node (serve) pour exposer Angular sur 5000
-CMD ["sh","-c","java -jar /backend/target/*.jar & npx serve -s /frontend/dist/descodeuses-app/browser -l 5000 --single"]
-# "sh -c" permet d’exécuter les 2 commandes dans le même conteneur
-# "java -jar ..." démarre Spring Boot
-# "npx serve ..." démarre le serveur Node pour le front
-# "--single" gère le fallback Angular (routes côté client)
+# - Lance le backend Spring Boot avec Java
+# - Lance en parallèle un serveur statique Node pour Angular
+CMD ["sh", "-c", "java -jar /backend/target/*.jar & npx serve -s /frontend/dist/descodeuses-app/browser -l 5000 --single"]
